@@ -17,11 +17,18 @@ function successors(n, e){
 	return suc
 }
 
+function print(data) {
+	if(data){
+		return data;
+	}
+	return '  ';
+}
+
 function bestfirst(start, end){
 	var cont = 0
 	var dot = '{'
 	var list = [[start,heuristic(start, end),inc(),0]];
-	dot+=list[0][2]+' [label="'+list[0][0]+'"];'
+	dot+=list[0][2]+`[label="| ${print(list[0][0][0])} | ${print(list[0][0][1])} | ${print(list[0][0][2])} |\n| ${print(list[0][0][3])} | ${print(list[0][0][4])} | ${print(list[0][0][5])} |\n| ${print(list[0][0][6])} | ${print(list[0][0][7])} | ${print(list[0][0][9])}"];`;
 	while (list.length > 0){		
 		var current = list.shift();
 		if (current[0] == end) {			
@@ -29,8 +36,7 @@ function bestfirst(start, end){
 			return dot
 		}		
 		var temp = successors(current, end);
-		//temp.reverse();
-		temp.forEach(val => dot+=val[2]+' [label="'+val[0]+'"];'+current[2]+'--'+val[2]+' [label="'+(val[1]-current[3]-1)+'+'+(current[3]+1)+'"] ;')
+		temp.forEach(val => dot+=val[2]+`[color="${val[0] === '12345678' ? '#FF5C5C': '#BCBCBC'}" label="| ${print(val[0][0])} | ${print(val[0][1])} | ${print(val[0][2])} |\n| ${print(val[0][3])} | ${print(val[0][4])} | ${print(val[0][5])} |\n| ${print(val[0][6])} | ${print(val[0][7])} | ${print(val[0][9])}"];`+current[2]+'--'+val[2]+';')
 		list = list.concat(temp);
 		list = list.sort( function(a,b) { return a[1] - b[1] });
 		cont++
